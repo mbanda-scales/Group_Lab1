@@ -5,7 +5,7 @@ if [[ -d "file_renaming" ]]; then
 fi
 
 for filepath in Chapter*; do
-    # Ensure it is a file and not a directory
+
     if [[ -f "$filepath" ]]; then
         
         filename=$(basename "$filepath")
