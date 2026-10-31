@@ -6,7 +6,7 @@ fi
 
 for dir in Chapter*/; do
     for filepath in "${dir}"DataSet*; do
-        # Ensure the file exists
+        
         if [[ -f "$filepath" ]]; then
             
             dirpath=$(dirname "$filepath")
