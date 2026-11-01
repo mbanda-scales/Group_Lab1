@@ -1,27 +1,28 @@
-#!/usr/bin/env bash
+#!/bin/bash
+#Moreblessing and Maxi
 
-if [[ -d "file_renaming" ]]; then
-    cd "file_renaming"
-fi
+today=$(date +%d%b%Y)
 
-for dir in Chapter*/; do
-    for filepath in "${dir}"DataSet*; do
-        # Ensure the file exists
-        if [[ -f "$filepath" ]]; then
-            
-            dirpath=$(dirname "$filepath")
-            filename=$(basename "$filepath")
-            currentDate=$(date +"%d%b%Y")
-            chapterNum="${dirpath#*Chapter}"
-            chapterNum="${chapterNum%/}"
-            temp="${filename#DataSet}"
-            datasetNum="${temp%.*}"
-            extension="${filename##*.}"
-            newName="CH${chapterNum}_DS${datasetNum}_${currentDate}.${extension}"
-            mv "$filepath" "${dirpath}/${newName}"
-            echo "Renamed: $filepath -> ${dirpath}/${newName}"
-        fi
-    done
+build_name() {
+    chapter=$1
+    dataset=$2
+    echo "CH${chapter}_DS${dataset}_${today}.sav"
+}
+
+for file in Chapter*/DataSet*.sav
+do
+    if [ -f "$file" ] #checks that a file exists
+    then
+        dir=$(dirname "$file")
+        base=$(basename "$file")
+        chapter=${dir#Chapter}
+        dataset=${base#DataSet}
+        dataset=${dataset%.sav}
+        newname=$(build_name "$chapter" "$dataset")
+        mv "$file" "$dir/$newname"
+    fi
 done
+
+
 
 echo "Renamed successfully"
