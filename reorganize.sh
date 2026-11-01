@@ -1,23 +1,15 @@
-#!/usr/bin/env bash
+#!/bin/bash
+#Moreblessing and Maxi
 
-if [[ -d "file_renaming" ]]; then
-    cd "file_renaming"
-fi
-
-for filepath in Chapter*; do
-    # Ensure it is a file and not a directory
-    if [[ -f "$filepath" ]]; then
-        
-        filename=$(basename "$filepath")
-        temp1="${filename#Chapter }"
-        chap="${temp1%% Data*}"
-        temp2="${filename#*Set }"
-        ds="${temp2%.*}"
-        target_dir="Chapter${chap}"
-        mkdir -p "$target_dir"
-
-        cp "$filepath" "${target_dir}/DataSet${ds}.sav"
-        echo "Copied: $filename -> ${target_dir}/DataSet${ds}.sav"
+for file in Chapter*Data\ Set*.sav
+do
+    if [ -f "$file" ] #checks that a file exists
+    then
+        chapter=$(echo "$file" | cut -d ' ' -f 2)
+        dataset=$(echo "$file" | cut -d ' ' -f 5)
+        dataset=${dataset%.sav}
+        mkdir -p "Chapter$chapter"
+        cp "$file" "Chapter$chapter/DataSet$dataset.sav"
     fi
 done
 
